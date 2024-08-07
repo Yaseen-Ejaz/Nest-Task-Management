@@ -1,3 +1,8 @@
+#Nest-Task
+
+Nest-Task is a backend application that can perform CRUD operations for tasks with NestJS using pipes, services, controllers, and modules. These can be tested using Postman. 
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
@@ -59,7 +64,3 @@ $ npm run test:cov
 ```
 - Website - [https://nestjs.com](https://nestjs.com/)
 - Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
