@@ -1,4 +1,4 @@
-# Nest-Task
+# NestJS Task Management App
 
 Nest-Task is a backend application that can perform CRUD operations for tasks with NestJS using pipes, services, controllers, and modules. These can be tested using Postman. 
 
