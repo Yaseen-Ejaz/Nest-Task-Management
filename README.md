@@ -1,3 +1,10 @@
+# NestJS Task Management App
+
+Nest-Task is a backend application that can perform CRUD operations for tasks with NestJS using pipes, services, controllers, and modules. 
+It can also store data in Postgres Database using ORM. These can be tested using Postman.
+This branch integrates auth using JWTs and Password Hashing for Users with their respective tasks.
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
