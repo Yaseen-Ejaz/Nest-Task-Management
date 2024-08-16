@@ -4,6 +4,7 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { AuthService } from './auth.service';
@@ -19,28 +20,36 @@ export class AuthController {
   @UseInterceptors(
     FileInterceptor('profilePicture', { storage: memoryStorage() }),
   )
-  register(
+  async register(
     @UploadedFile() file: Express.Multer.File,
     @Body() registerUserDto: RegisterUserDto,
   ): Promise<void> {
-    const maxFileSize = 1048576; // 1MB
-    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    if (file.size > maxFileSize) {
-      throw new Error(`Image size must be less than ${maxFileSize} bytes`);
-    }
-    if (!allowedMimeTypes.includes(file.mimetype)) {
-      throw new Error(
-        `Image type must be one of ${allowedMimeTypes.join(', ')}`,
-      );
-    }
     if (file) {
+      const maxFileSize = 1048576; // 1MB
+      const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+      if (file.size > maxFileSize) {
+        throw new BadRequestException(
+          `Image size must be less than ${maxFileSize} bytes`,
+        );
+      }
+
+      if (!allowedMimeTypes.includes(file.mimetype)) {
+        throw new BadRequestException(
+          `Image type must be one of ${allowedMimeTypes.join(', ')}`,
+        );
+      }
+
       registerUserDto.profilePicture = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
     }
+
     return this.authService.register(registerUserDto);
   }
 
-  @Post('/login')
-  Login(@Body() loginUserDto: LoginUserDto): Promise<{ accessToken: string }> {
+  @Post('login')
+  async login(
+    @Body() loginUserDto: LoginUserDto,
+  ): Promise<{ accessToken: string }> {
     return this.authService.Login(loginUserDto);
   }
 }

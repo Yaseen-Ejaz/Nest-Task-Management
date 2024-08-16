@@ -1,8 +1,8 @@
-import { IsEmail, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class GetUserProfileDto {
-  @IsEmail()
-  email: string;
+  @IsString()
+  username: string;
 
   @MinLength(4)
   @MaxLength(32)

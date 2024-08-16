@@ -1,6 +1,8 @@
 import { IsEmail, MaxLength, MinLength } from 'class-validator';
 
 export class LoginUserDto {
+  id: number;
+
   @IsEmail()
   email: string;
 

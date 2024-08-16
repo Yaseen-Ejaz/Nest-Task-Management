@@ -5,9 +5,9 @@ import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepsitory: UserRepository) {} //private userRepository: UserRepository) {}
+  constructor(private userRepository: UserRepository) {} //private userRepository: UserRepository) {}
 
-  getUserProfile(getUserProfileDto: GetUserProfileDto): Promise<User> {
-    return this.userRepsitory.getUserProfile(getUserProfileDto);
+  getUserProfile(id: string): Promise<User> {
+    return this.userRepository.getUserProfile(id);
   }
 }
