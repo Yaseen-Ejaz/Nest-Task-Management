@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
+import { AdminModule } from './admin/admin.module';
+import { AdminController } from './admin/admin.controller';
+import { AdminService } from './admin/admin.service';
 
 @Module({
   imports: [
@@ -23,6 +26,7 @@ import { memoryStorage } from 'multer';
       dest: './uploads',
     }),
     AuthModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

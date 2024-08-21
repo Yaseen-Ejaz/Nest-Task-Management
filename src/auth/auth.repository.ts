@@ -8,6 +8,7 @@ import { DataSource, Repository } from 'typeorm';
 import { RegisterUserDto } from './dto/register-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UserRole } from 'src/user/user-role.enum';
 @Injectable()
 export class AuthRepository extends Repository<User> {
   constructor(
@@ -32,6 +33,7 @@ export class AuthRepository extends Repository<User> {
       profilePicture,
       createdAt: today,
       updatedAt: today,
+      role: UserRole.USER,
     });
 
     try {

@@ -15,6 +15,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ExtractJwt } from 'passport-jwt';
 import { JwtService } from '@nestjs/jwt';
 import { request } from 'http';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('profile')
 export class UserController {

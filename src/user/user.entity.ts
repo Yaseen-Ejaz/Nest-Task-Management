@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { UserRole } from './user-role.enum';
 
 @Entity()
 export class User {
@@ -23,4 +24,7 @@ export class User {
   @Column()
   updatedAt: Date;
   token: any;
+
+  @Column()
+  role: UserRole;
 }

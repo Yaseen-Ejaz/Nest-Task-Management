@@ -23,7 +23,8 @@ export class AuthService {
     });
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload: JwtPayload = { id, email, password };
-      const accessToken: string = await this.jwtService.sign(payload);
+      const secret = 'topSecret51'; // Define the secret variable and assign it a value
+      const accessToken = this.jwtService.sign(payload, { secret });
       return { accessToken };
     } else {
       throw new UnauthorizedException('Please check credentials');
