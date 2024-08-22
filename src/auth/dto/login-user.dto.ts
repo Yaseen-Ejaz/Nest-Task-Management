@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, MaxLength, MinLength } from 'class-validator';
 
 export class LoginUserDto {
   id: number;
@@ -9,5 +9,4 @@ export class LoginUserDto {
   @MinLength(8)
   @MaxLength(32)
   password: string;
-
 }

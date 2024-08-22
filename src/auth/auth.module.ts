@@ -5,8 +5,8 @@ import { AuthController } from './auth.controller';
 import { AuthRepository } from './auth.repository';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt.strategy'; // Import JwtStrategy
-
+import { ActivityLogService } from 'src/activitylog/activitylog.service';
+import { ActivityLogModule } from 'src/activitylog/activitylog.module';
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -17,8 +17,9 @@ import { JwtStrategy } from './jwt.strategy'; // Import JwtStrategy
       },
     }),
     TypeOrmModule.forFeature([AuthRepository]),
+    ActivityLogModule,
   ],
-  providers: [AuthService, AuthRepository, JwtService], // Add JwtStrategy here
+  providers: [AuthService, AuthRepository, JwtService, ActivityLogService],
   controllers: [AuthController],
   exports: [JwtService],
 })

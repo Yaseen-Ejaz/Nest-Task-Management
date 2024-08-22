@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserRole } from './user-role.enum';
+import { ActivityLog } from 'src/admin/activity-log.entity';
 
 @Entity()
 export class User {
@@ -25,6 +26,14 @@ export class User {
   updatedAt: Date;
   token: any;
 
+  @Column({ nullable: true })
+  verificationToken?: string;
+
   @Column()
   role: UserRole;
+
+  @OneToMany((_type) => ActivityLog, (activityLog) => activityLog.user, {
+    eager: true,
+  })
+  activityLogs: ActivityLog[];
 }

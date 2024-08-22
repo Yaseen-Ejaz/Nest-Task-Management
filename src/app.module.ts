@@ -5,8 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { AdminModule } from './admin/admin.module';
-import { AdminController } from './admin/admin.controller';
-import { AdminService } from './admin/admin.service';
+import { ActivityLogModule } from './activitylog/activitylog.module';
 
 @Module({
   imports: [
@@ -27,6 +26,7 @@ import { AdminService } from './admin/admin.service';
     }),
     AuthModule,
     AdminModule,
+    ActivityLogModule,
   ],
 })
 export class AppModule {}
