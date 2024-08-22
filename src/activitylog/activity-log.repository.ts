@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ActivityLog } from 'src/admin/activity-log.entity';
+import { ActivityLog } from 'src/activitylog/activity-log.entity';
 import { StoreActivityLogDto } from 'src/activitylog/dto/store-activity-log.dto';
 import { DataSource, Repository } from 'typeorm';
 @Injectable()

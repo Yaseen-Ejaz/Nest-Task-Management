@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ActivityLog } from 'src/admin/activity-log.entity'; // Assuming this path is correct
+import { ActivityLog } from 'src/activitylog/activity-log.entity'; // Assuming this path is correct
 import { ActivityLogService } from './activitylog.service';
 import { ActivityLogRepository } from './activity-log.repository';
 

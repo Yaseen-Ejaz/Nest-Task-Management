@@ -6,7 +6,7 @@ export class ActivityLog {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne((_type) => User, (user) => user.activityLogs)
+  @ManyToOne(() => User, (user) => user.activityLogs)
   user: User;
 
   @Column()

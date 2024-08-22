@@ -1,8 +1,6 @@
 import { DataSource, Repository } from 'typeorm';
 import { User } from './user.entity';
-import { GetUserProfileDto } from './dto/get-user-profile.dto';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -16,5 +14,4 @@ export class UserRepository extends Repository<User> {
     });
     return userInfo;
   }
-
 }
