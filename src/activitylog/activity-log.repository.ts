@@ -23,11 +23,18 @@ export class ActivityLogRepository extends Repository<ActivityLog> {
   async getLogs(): Promise<ActivityLog[]> {
     const queryBuilder = this.createQueryBuilder('activityLog');
 
-    // Apply pagination based on pagination DTO
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
+    queryBuilder.where(
+      'activityLog.timestamp >= :todayStart AND activityLog.timestamp <= :todayEnd',
+      { todayStart, todayEnd },
+    );
+
     queryBuilder.skip(0 * 5).take(5);
 
-    // Apply sorting based on sorting DTO (if needed)
-    // queryBuilder.orderBy('activityLog.createdAt', 'DESC'); // Example: Sort by created date descending
     return queryBuilder.getMany();
   }
 }
