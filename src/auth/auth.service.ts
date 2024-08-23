@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './jwt-payload.interface';
 import { ActivityLogService } from '../activitylog/activitylog.service';
 import { StoreActivityLogDto } from 'src/activitylog/dto/store-activity-log.dto';
+import { RealIP } from 'nestjs-real-ip';
 
 @Injectable()
 export class AuthService {
@@ -43,5 +44,9 @@ export class AuthService {
       await this.activityLogService.logActivity(activityLogDto);
       throw new UnauthorizedException('Please check credentials');
     }
+  }
+
+  getIP(@RealIP() ip: string): string {
+    return ip;
   }
 }

@@ -32,7 +32,7 @@ export class User {
   @Column()
   role: UserRole;
 
-  @OneToMany((_type) => ActivityLog, (activityLog) => activityLog.user, {
+  @OneToMany(() => ActivityLog, (activityLog) => activityLog.user, {
     eager: true,
   })
   activityLogs: ActivityLog[];

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from 'src/user/user.entity';
 import { Repository, DataSource } from 'typeorm';
 import { GetUsersDto } from './dto/get-users.dto';
+import { ActivityLog } from 'src/activitylog/activity-log.entity';
 
 @Injectable()
 export class AdminRepository extends Repository<User> {
@@ -9,22 +10,8 @@ export class AdminRepository extends Repository<User> {
     super(User, dataSource.createEntityManager());
   }
 
-  async getUsers(getUsersDto: GetUsersDto): Promise<User[]> {
-    const { username, email } = getUsersDto;
-
-    try {
-      const queryBuilder = this.createQueryBuilder();
-      queryBuilder.where('username LIKE :username OR email LIKE :email', {
-        username,
-        email,
-      });
-
-      const users = await queryBuilder.getMany();
-      return users;
-    } catch (error) {
-      // Handle errors appropriately
-      throw new Error('Failed to retrieve users: ' + error.message);
-    }
+  async getUsers(): Promise<User[]> {
+    return this.find();
   }
 
   async deleteUser(id: string): Promise<void> {
