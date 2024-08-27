@@ -45,6 +45,7 @@
     "passport-strategy": "^1.0.0",
     "pg": "^8.12.0",
     "reflect-metadata": "^0.2.0",
+    "request-ip": "^3.3.0",
     "rxjs": "^7.8.1",
     "transform": "^1.1.2",
     "typeorm": "^0.3.20"

@@ -6,10 +6,11 @@ import { User } from './user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { UserRepository } from './user.repository';
 import { AuthModule } from 'src/auth/auth.module';
+import { ActivityLogRepository } from 'src/activitylog/activity-log.repository';
 
 @Module({
   imports: [ConfigModule, TypeOrmModule.forFeature([User]), AuthModule],
-  providers: [UserService, UserRepository],
+  providers: [UserService, UserRepository, ActivityLogRepository],
   controllers: [UserController],
 })
 export class UserModule {}

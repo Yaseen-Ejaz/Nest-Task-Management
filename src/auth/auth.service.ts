@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Req, UnauthorizedException } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { AuthRepository } from './auth.repository';
 import { JwtService } from '@nestjs/jwt';
@@ -7,7 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './jwt-payload.interface';
 import { ActivityLogService } from '../activitylog/activitylog.service';
 import { StoreActivityLogDto } from 'src/activitylog/dto/store-activity-log.dto';
-import { RealIP } from 'nestjs-real-ip';
+import * as requestIp from 'request-ip';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +28,7 @@ export class AuthService {
     });
     const activityLogDto = new StoreActivityLogDto();
     activityLogDto.user = user;
-    activityLogDto.ipAddress = '192.168.0.01';
+    activityLogDto.ipAddress = '192.168.100.101';
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload: JwtPayload = { id, email, password };
       const secret = 'topSecret51'; // Define the secret variable and assign it a value
@@ -44,9 +44,5 @@ export class AuthService {
       await this.activityLogService.logActivity(activityLogDto);
       throw new UnauthorizedException('Please check credentials');
     }
-  }
-
-  getIP(@RealIP() ip: string): string {
-    return ip;
   }
 }

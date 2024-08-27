@@ -18,4 +18,8 @@ export class UserService {
     return token;
   }
 
+  updatetUserProfile(id: string, pfp: string): Promise<void> {
+    return this.userRepository.updateUserProfile(id,pfp);
+  }
+
 }

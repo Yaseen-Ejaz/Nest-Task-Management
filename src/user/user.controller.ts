@@ -1,10 +1,13 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
   Param,
+  Put,
   Req,
   UnauthorizedException,
+  UploadedFile,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -24,10 +27,7 @@ export class UserController {
     private userService: UserService,
   ) {}
   @Get()
-  getUserProfile(
-    @Param('id') id: string,
-    @Req() request: Request,
-  ): Promise<User> {
+  getUserProfile(@Req() request: Request): Promise<User> {
     const extractToken = ExtractJwt.fromAuthHeaderAsBearerToken()(request);
     if (!extractToken) {
       throw new UnauthorizedException();
@@ -39,9 +39,53 @@ export class UserController {
       });
 
       // Assign the payload to the request object
-      request['id'] = payload;
+      const { id } = payload;
 
       return this.userService.getUserProfile(id);
+    } catch {
+      throw new UnauthorizedException();
+    }
+  }
+
+  @Put()
+  updateUserProfile(
+    @Req() request: Request,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<void> {
+    let pfp;
+    if (file) {
+      const maxFileSize = 1048576; // 1MB
+      const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+      if (file.size > maxFileSize) {
+        throw new BadRequestException(
+          `Image size must be less than ${maxFileSize} bytes`,
+        );
+      }
+
+      if (!allowedMimeTypes.includes(file.mimetype)) {
+        throw new BadRequestException(
+          `Image type must be one of ${allowedMimeTypes.join(', ')}`,
+        );
+      }
+
+      pfp = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+    }
+
+    const extractToken = ExtractJwt.fromAuthHeaderAsBearerToken()(request);
+    if (!extractToken) {
+      throw new UnauthorizedException();
+    }
+
+    try {
+      const payload = this.jwtService.verify(extractToken, {
+        secret: 'topSecret51',
+      });
+
+      // Assign the payload to the request object
+      const { id } = payload;
+
+      return this.userService.updatetUserProfile(id, pfp);
     } catch {
       throw new UnauthorizedException();
     }

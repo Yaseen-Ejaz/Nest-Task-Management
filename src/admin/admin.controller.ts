@@ -30,7 +30,7 @@ export class AdminController {
   }
 
   @Get('logs')
-  //@Roles(UserRole.ADMIN)
+  @Roles(UserRole.ADMIN)
   getLogs(): Promise<ActivityLog[]> {
     return this.activityLogRepository.getLogs();
   }
