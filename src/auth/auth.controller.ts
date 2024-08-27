@@ -5,6 +5,7 @@ import {
   UploadedFile,
   UseInterceptors,
   BadRequestException,
+  Ip,
 } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { AuthService } from './auth.service';
@@ -49,7 +50,8 @@ export class AuthController {
   @Post('login')
   async login(
     @Body() loginUserDto: LoginUserDto,
+    @Ip() ip: string,
   ): Promise<{ accessToken: string }> {
-    return this.authService.Login(loginUserDto);
+    return this.authService.Login(loginUserDto, ip);
   }
 }

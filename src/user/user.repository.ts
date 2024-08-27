@@ -20,14 +20,14 @@ export class UserRepository extends Repository<User> {
     return userInfo;
   }
 
-  async updateUserProfile(id: string, pfp: string): Promise<void> {
+  async updateUserProfile(id: string, pfp: string, ip: string): Promise<void> {
     const userInfo = await this.getUserProfile(id);
     userInfo.profilePicture = pfp;
     await this.save(userInfo);
 
     const activityLogDto = new StoreActivityLogDto();
     activityLogDto.user = userInfo;
-    activityLogDto.ipAddress = '192.168.100.101';
+    activityLogDto.ipAddress = String(ip);
     activityLogDto.action = 'Profile Picture Updated';
     activityLogDto.timestamp = new Date();
 

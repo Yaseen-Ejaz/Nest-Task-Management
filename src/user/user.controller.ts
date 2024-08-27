@@ -1,24 +1,16 @@
 import {
   BadRequestException,
-  Body,
   Controller,
   Get,
-  Param,
+  Ip,
   Put,
   Req,
-  UnauthorizedException,
   UploadedFile,
-  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { GetUserProfileDto } from './dto/get-user-profile.dto';
 import { User } from './user.entity';
-import { GetUser } from 'src/auth/auth-user.decorator';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ExtractJwt } from 'passport-jwt';
 import { JwtService } from '@nestjs/jwt';
-import { request } from 'http';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('profile')
 export class UserController {
@@ -29,28 +21,16 @@ export class UserController {
   @Get()
   getUserProfile(@Req() request: Request): Promise<User> {
     const extractToken = ExtractJwt.fromAuthHeaderAsBearerToken()(request);
-    if (!extractToken) {
-      throw new UnauthorizedException();
-    }
 
-    try {
-      const payload = this.jwtService.verify(extractToken, {
-        secret: 'topSecret51',
-      });
-
-      // Assign the payload to the request object
-      const { id } = payload;
-
-      return this.userService.getUserProfile(id);
-    } catch {
-      throw new UnauthorizedException();
-    }
+    const id = this.userService.decryptToken(extractToken);
+    return this.userService.getUserProfile(id);
   }
 
   @Put()
   updateUserProfile(
     @Req() request: Request,
     @UploadedFile() file: Express.Multer.File,
+    @Ip() ip: string,
   ): Promise<void> {
     let pfp;
     if (file) {
@@ -73,21 +53,7 @@ export class UserController {
     }
 
     const extractToken = ExtractJwt.fromAuthHeaderAsBearerToken()(request);
-    if (!extractToken) {
-      throw new UnauthorizedException();
-    }
-
-    try {
-      const payload = this.jwtService.verify(extractToken, {
-        secret: 'topSecret51',
-      });
-
-      // Assign the payload to the request object
-      const { id } = payload;
-
-      return this.userService.updatetUserProfile(id, pfp);
-    } catch {
-      throw new UnauthorizedException();
-    }
+    const id = this.userService.decryptToken(extractToken);
+    return this.userService.updatetUserProfile(id, pfp, ip);
   }
 }

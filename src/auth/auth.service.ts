@@ -21,14 +21,17 @@ export class AuthService {
     return this.authRepository.Register(registerUserDto);
   }
 
-  async Login(loginUserDto: LoginUserDto): Promise<{ accessToken: string }> {
+  async Login(
+    loginUserDto: LoginUserDto,
+    ip: string,
+  ): Promise<{ accessToken: string }> {
     const { id, email, password } = loginUserDto;
     const user = await this.authRepository.findOne({
       where: { email: email },
     });
     const activityLogDto = new StoreActivityLogDto();
     activityLogDto.user = user;
-    activityLogDto.ipAddress = '192.168.100.101';
+    activityLogDto.ipAddress = String(ip);
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload: JwtPayload = { id, email, password };
       const secret = 'topSecret51'; // Define the secret variable and assign it a value
