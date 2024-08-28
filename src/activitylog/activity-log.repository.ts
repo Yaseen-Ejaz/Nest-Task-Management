@@ -10,9 +10,11 @@ export class ActivityLogRepository extends Repository<ActivityLog> {
   }
 
   async logActivity(createActivityLogDto: StoreActivityLogDto) {
-    const { user, action, timestamp, ipAddress } = createActivityLogDto;
+    const { user, action, timestamp, ipAddress, storeValue } =
+      createActivityLogDto;
     const activityLog = this.create({
       user,
+      storeValue,
       action,
       timestamp,
       ipAddress,

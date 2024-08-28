@@ -4,8 +4,6 @@ import { Injectable } from '@nestjs/common';
 import { StoreActivityLogDto } from 'src/activitylog/dto/store-activity-log.dto';
 import { ActivityLogRepository } from 'src/activitylog/activity-log.repository';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { concat } from 'rxjs';
-import { profile } from 'console';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -32,25 +30,46 @@ export class UserRepository extends Repository<User> {
       where: { id: id },
     });
     const { username, profilePicture } = updateProfileDto;
+    let updatePFPFlag = false;
+    let updateUserFlag = false;
     let updateString = '';
+    let oldUsername = '';
+    let oldProfilePicture = '';
     const activityLogDto = new StoreActivityLogDto();
     activityLogDto.user = userInfo;
     activityLogDto.ipAddress = String(ip);
 
-    if (profilePicture) {
+    if (profilePicture && userInfo.profilePicture != profilePicture) {
+      oldProfilePicture = userInfo.profilePicture;
       userInfo.profilePicture = profilePicture;
-      updateString += ' Profile Picture Updated';
+      updatePFPFlag = true;
     }
 
-    if (username) {
+    if (username && userInfo.username != username) {
+      oldUsername = userInfo.username;
       userInfo.username = username;
-      updateString += ' Username Updated';
+      updateUserFlag = true;
     }
 
-    userInfo.updatedAt = new Date();
-    this.save(userInfo); // Update the user(userInfo); // Ensure this is awaited if it's an async operation
-    activityLogDto.action = updateString;
-    activityLogDto.timestamp = new Date();
-    await this.activityLogRepository.logActivity(activityLogDto);
+    if (updateUserFlag || updatePFPFlag) {
+      userInfo.updatedAt = new Date();
+      this.save(userInfo);
+
+      if (updateUserFlag) {
+        updateString = 'Username Updated';
+        activityLogDto.action = updateString;
+        activityLogDto.timestamp = new Date();
+        activityLogDto.storeValue = oldUsername;
+        await this.activityLogRepository.logActivity(activityLogDto);
+      }
+
+      if (updatePFPFlag) {
+        updateString = 'Profile Picture Updated';
+        activityLogDto.action = updateString;
+        activityLogDto.timestamp = new Date();
+        activityLogDto.storeValue = oldProfilePicture;
+        await this.activityLogRepository.logActivity(activityLogDto);
+      }
+    }
   }
 }

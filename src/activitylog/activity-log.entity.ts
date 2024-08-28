@@ -13,6 +13,9 @@ export class ActivityLog {
   action: string;
 
   @Column()
+  storeValue: string;
+
+  @Column()
   timestamp: Date;
 
   @Column()

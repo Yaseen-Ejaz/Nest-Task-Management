@@ -7,6 +7,9 @@ export class StoreActivityLogDto {
   @IsString()
   action: string;
 
+  @IsString()
+  storeValue: string;
+
   @IsDate()
   timestamp: Date;
 
