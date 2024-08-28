@@ -1,9 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { GetUserProfileDto } from './dto/get-user-profile.dto';
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
-import * as crypto from 'crypto';
 import { JwtService } from '@nestjs/jwt';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class UserService {
@@ -35,7 +34,11 @@ export class UserService {
     }
   }
 
-  updatetUserProfile(id: string, pfp: string, ip: string): Promise<void> {
-    return this.userRepository.updateUserProfile(id, pfp, ip);
+  updatetUserProfile(
+    id: string,
+    updateProfileDto: UpdateProfileDto,
+    ip: string,
+  ): Promise<void> {
+    return this.userRepository.updateUserProfile(id, updateProfileDto, ip);
   }
 }

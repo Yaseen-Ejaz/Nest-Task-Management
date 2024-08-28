@@ -1,4 +1,4 @@
-import { Injectable, Req, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { AuthRepository } from './auth.repository';
 import { JwtService } from '@nestjs/jwt';
@@ -7,7 +7,6 @@ import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './jwt-payload.interface';
 import { ActivityLogService } from '../activitylog/activitylog.service';
 import { StoreActivityLogDto } from 'src/activitylog/dto/store-activity-log.dto';
-import * as requestIp from 'request-ip';
 
 @Injectable()
 export class AuthService {
@@ -17,8 +16,8 @@ export class AuthService {
     private activityLogService: ActivityLogService,
   ) {}
 
-  async register(registerUserDto: RegisterUserDto): Promise<void> {
-    return this.authRepository.Register(registerUserDto);
+  async register(registerUserDto: RegisterUserDto, ip: string): Promise<void> {
+    return this.authRepository.Register(registerUserDto, ip);
   }
 
   async Login(

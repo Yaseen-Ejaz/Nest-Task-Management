@@ -3,10 +3,8 @@ import { Roles } from './user-role.decorator';
 import { UserRole } from 'src/user/user-role.enum';
 import { AdminService } from './admin.service';
 import { User } from 'src/user/user.entity';
-import { GetUsersDto } from './dto/get-users.dto';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { ActivityLog } from 'src/activitylog/activity-log.entity';
-import { StoreActivityLogDto } from 'src/activitylog/dto/store-activity-log.dto';
 import { ActivityLogRepository } from 'src/activitylog/activity-log.repository';
 
 @Controller('admin')

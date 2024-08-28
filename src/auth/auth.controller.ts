@@ -22,6 +22,7 @@ export class AuthController {
     FileInterceptor('profilePicture', { storage: memoryStorage() }),
   )
   async register(
+    @Ip() ip: string,
     @UploadedFile() file: Express.Multer.File,
     @Body() registerUserDto: RegisterUserDto,
   ): Promise<void> {
@@ -44,7 +45,7 @@ export class AuthController {
       registerUserDto.profilePicture = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
     }
 
-    return this.authService.register(registerUserDto);
+    return this.authService.register(registerUserDto, ip);
   }
 
   @Post('login')

@@ -1,16 +1,21 @@
 import {
   BadRequestException,
+  Body,
   Controller,
   Get,
   Ip,
   Put,
   Req,
   UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { ExtractJwt } from 'passport-jwt';
 import { JwtService } from '@nestjs/jwt';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 
 @Controller('profile')
 export class UserController {
@@ -27,12 +32,15 @@ export class UserController {
   }
 
   @Put()
+  @UseInterceptors(
+    FileInterceptor('profilePicture', { storage: memoryStorage() }),
+  )
   updateUserProfile(
+    @Body() updateProfileDto: UpdateProfileDto,
     @Req() request: Request,
     @UploadedFile() file: Express.Multer.File,
     @Ip() ip: string,
   ): Promise<void> {
-    let pfp;
     if (file) {
       const maxFileSize = 1048576; // 1MB
       const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -49,11 +57,11 @@ export class UserController {
         );
       }
 
-      pfp = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+      updateProfileDto.profilePicture = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
     }
 
     const extractToken = ExtractJwt.fromAuthHeaderAsBearerToken()(request);
     const id = this.userService.decryptToken(extractToken);
-    return this.userService.updatetUserProfile(id, pfp, ip);
+    return this.userService.updatetUserProfile(id, updateProfileDto, ip);
   }
 }
