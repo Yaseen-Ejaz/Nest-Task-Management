@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { ActivityLog } from 'src/activitylog/activity-log.entity';
 import { StoreActivityLogDto } from 'src/activitylog/dto/store-activity-log.dto';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, EventSubscriber, Repository } from 'typeorm';
 
 @Injectable()
+@EventSubscriber()
 export class ActivityLogRepository extends Repository<ActivityLog> {
   constructor(private dataSource: DataSource) {
     super(ActivityLog, dataSource.createEntityManager());
   }
 
-  async logActivity(createActivityLogDto: StoreActivityLogDto) {
-    const { user, action, timestamp, ipAddress, storeValue } =
-      createActivityLogDto;
+  async afterInsert(event: StoreActivityLogDto) {
+    const { user, action, timestamp, ipAddress, storeValue } = event;
     const activityLog = this.create({
       user,
       storeValue,

@@ -44,7 +44,6 @@ export class AuthController {
 
       registerUserDto.profilePicture = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
     }
-
     return this.authService.register(registerUserDto, ip);
   }
 

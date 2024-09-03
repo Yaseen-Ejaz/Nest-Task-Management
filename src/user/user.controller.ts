@@ -12,17 +12,13 @@ import {
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { ExtractJwt } from 'passport-jwt';
-import { JwtService } from '@nestjs/jwt';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 
 @Controller('profile')
 export class UserController {
-  constructor(
-    private jwtService: JwtService,
-    private userService: UserService,
-  ) {}
+  constructor(private userService: UserService) {}
   @Get()
   getUserProfile(@Req() request: Request): Promise<User> {
     const extractToken = ExtractJwt.fromAuthHeaderAsBearerToken()(request);

@@ -36,6 +36,7 @@ export class AuthService {
       const secret = 'topSecret51'; // Define the secret variable and assign it a value
       const accessToken = this.jwtService.sign(payload, { secret });
       activityLogDto.action = 'Login Successful';
+      activityLogDto.storeValue = user.username;
       activityLogDto.timestamp = new Date();
       await this.activityLogService.logActivity(activityLogDto);
 

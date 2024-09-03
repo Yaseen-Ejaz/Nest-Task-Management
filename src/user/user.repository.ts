@@ -60,7 +60,7 @@ export class UserRepository extends Repository<User> {
         activityLogDto.action = updateString;
         activityLogDto.timestamp = new Date();
         activityLogDto.storeValue = oldUsername;
-        await this.activityLogRepository.logActivity(activityLogDto);
+        await this.activityLogRepository.afterInsert(activityLogDto);
       }
 
       if (updatePFPFlag) {
@@ -68,7 +68,7 @@ export class UserRepository extends Repository<User> {
         activityLogDto.action = updateString;
         activityLogDto.timestamp = new Date();
         activityLogDto.storeValue = oldProfilePicture;
-        await this.activityLogRepository.logActivity(activityLogDto);
+        await this.activityLogRepository.afterInsert(activityLogDto);
       }
     }
   }
